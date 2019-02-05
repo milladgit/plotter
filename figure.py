@@ -75,8 +75,13 @@ class Figure(object):
 					exit(1)
 				plot_id = int(params[0].strip())
 				config_filename = params[1].strip()
-				C = findconfig(config_filename)
-				C.ax_id = plot_id
+				if config_filename == "off":
+					C = Configuration("")
+					C.ax_id = plot_id
+					C.turn_off = True
+				else:
+					C = findconfig(config_filename)
+					C.ax_id = plot_id
 				self.add_configuration(C)
 
 
@@ -105,7 +110,10 @@ class Figure(object):
 				_ax = ax[i_x, i_y]
 
 
-			self.configuration_list[i].draw(_ax)
+			if self.configuration_list[i].turn_off:
+				_ax.axis("off")
+			else:
+				self.configuration_list[i].draw(_ax)
 
 
 

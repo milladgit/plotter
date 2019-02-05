@@ -15,7 +15,7 @@ ylabel: Bandwidth (GB/s)
 
 xticks_rotation: 40
 
-legend: off
+legend: on
 
 
 xaxis_datatype: string

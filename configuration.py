@@ -9,6 +9,7 @@ import utils
 class Configuration(object):
 
 	def __init__(self, filename):
+		self.turn_off = False
 		self.ax_id = -1
 
 		self.type = ""
@@ -34,6 +35,9 @@ class Configuration(object):
 
 
 	def load_config(self, filename):
+		if filename == "":
+			return 
+			
 		f = open(filename, "r")
 		lines = f.readlines()
 		f.close()
