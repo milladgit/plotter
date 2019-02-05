@@ -1,0 +1,47 @@
+
+type: barplot
+
+
+background_color: #FddFFF
+
+bar_count: 1
+
+width: 0.13
+
+#colors: SkyBlue, IndianRed
+colors: black
+
+labels: Bandwidth
+
+ylabel: Bandwidth (GB/s)
+
+xticks_rotation: 20
+
+legend: off
+
+put_label_on_top: off
+
+datatype: float
+
+index_begin: 0.0
+index_step: 0.23
+
+#spine: {left,right,top,bottom},{color,linewidth,visible},<value>
+spine: left,color,red
+spine: left,linewidth,1 
+spine: bottom,color,#CCCCCC
+spine: bottom,linewidth,1 
+spine: right,visible,False
+
+
+#xticks_label: OpenMP, kokkos, RAJA, OpenACC, Gecko w/ a
+#data_0: 76.419, 75.775, 77.256, 80.112, 65.491
+
+
+#datatable: <num_of_data_columns>
+datatable: 1
+OpenMP;76.419
+kokkos;75.775
+RAJA;77.256
+OpenACC;80.112
+Gecko w/ a;65.491

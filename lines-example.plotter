@@ -1,0 +1,47 @@
+
+type: lineplot
+
+
+background_color: #CCCCCC
+
+#colors: SkyBlue, IndianRed, red
+#colors: black
+
+line_styles: o-,.-,x-
+
+labels: Bandwidth
+
+ylabel: Bandwidth (GB/s)
+
+xticks_rotation: 40
+
+legend: off
+
+
+xaxis_datatype: string
+datatype: float
+
+
+
+xticks_label: CUDA, kokkos, RAJA, OpenACC, Gecko w/ b, Gecko w/ c, Gecko w/ d, Gecko w/ e, Gecko w/ f, Gecko w/ g, Gecko w/ BW, Gecko H(0.02), Gecko w/ H(0.003), Gecko w/ H(0.04)
+data_0: 815.315, 817.537, 815.934, 792.491, 788.747, 789.046, 793.371, 1445.294, 1763.016, 1883.930, 1650.087, 1969.686, 1917.487, 1551.732
+data_1: 200, 815.315, 817.537, 815.934, 792.491, 788.747, 789.046, 793.371, 1445.294, 1763.016, 1883.930, 1650.087, 1969.686, 1917.487
+data_2: 1917.487,200, 815.315, 817.537, 815.934, 792.491, 788.747, 789.046, 793.371, 1445.294, 1763.016, 1883.930, 1650.087, 1969.686
+
+
+#datatable: <num_of_data_columns>
+#datatable: 1
+#0;815.315;1000
+#1;817.537;2000
+#2;815.934;4000
+#3;792.491;3500
+#CUDA;788.747;3000
+#4;793.371;2800
+#5;1445.294;1000
+#6;1763.016;1200
+#7;1883.930;800
+#8;1650.087;900
+#9;1551.732;1400
+#10;1917.487;1500
+#11;1969.686;1600
+
