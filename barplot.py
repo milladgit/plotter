@@ -137,17 +137,27 @@ class BarPlot(Configuration):
 			index = 0
 			rect = ax.bar(ind, C.data_dict[index], width, color=C.colors[index], label=C.labels[index])
 			rects_list.append(rect)
-		elif C.bar_count == 2:
-			index = 0
-			rect = ax.bar(ind - width/2, C.data_dict[index], width, color=C.colors[index], label=C.labels[index])
-			rects_list.append(rect)
-			index = 1
-			rect = ax.bar(ind + width/2, C.data_dict[index], width, color=C.colors[index], label=C.labels[index])
-			rects_list.append(rect)
+		else:
+			# index = 0
+			# rect = ax.bar(ind - width/2, C.data_dict[index], width, color=C.colors[index], label=C.labels[index])
+			# rects_list.append(rect)
+			# index = 1
+			# rect = ax.bar(ind + width/2, C.data_dict[index], width, color=C.colors[index], label=C.labels[index])
+			# rects_list.append(rect)
+			for index in range(C.bar_count):
+				disposition = -width*C.bar_count/2.0 + index*width + width/2.0
+				if len(C.colors) > 0:
+					rect = ax.bar(ind + disposition, C.data_dict[index], width, color=C.colors[index], label=C.labels[index])
+				else:
+					rect = ax.bar(ind + disposition, C.data_dict[index], width, label=C.labels[index])
+				rects_list.append(rect)
 
 
 		ax.set_xticks(ind)
-		ax.set_xticklabels(C.xticks_label, rotation=C.xticks_rotation)
+		_ha = "right"
+		if C.xticks_rotation in [0, 90]:
+			_ha = "center"
+		ax.set_xticklabels(C.xticks_label, rotation=C.xticks_rotation, ha=_ha)
 
 
 		if C.put_label_on_top == "on":

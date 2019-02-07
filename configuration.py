@@ -12,15 +12,23 @@ class Configuration(object):
 		self.turn_off = False
 		self.ax_id = -1
 
+		self.title = ""
+
 		self.type = ""
 		self.width = 0.35
 		self.colors = []
 		self.labels = []
-		self.ylabel = []
+		self.ylabel = ""
 		self.title = ""
+		self.xticks_label_show = "on"
+		self.yticks_label_show = "on"
 		self.xticks_label = []
 		self.xticks_rotation = 0
 		self.legend = "on"
+		self.xlim = None
+		self.ylim = None
+		self.xticks_pad = None
+		self.yticks_pad = None
 
 		self.grid = "on"
 		self.grid_which = "major"   # major, minor, both
@@ -67,6 +75,8 @@ class Configuration(object):
 
 			if k == "type":
 				self.type = v
+			elif k == "title":
+				self.title = v
 			elif k == "width":
 				self.width = float(v)
 			elif k == "colors":
@@ -79,11 +89,19 @@ class Configuration(object):
 				self.ylabel = v
 			elif k == "title":
 				self.title = v
+			elif k == "xticks_label_show":
+				self.xticks_label_show = v
+			elif k == "yticks_label_show":
+				self.yticks_label_show = v
 			elif k == "xticks_label":
 				self.xticks_label = v.split(",")
 				self.xticks_label = [q.strip() for q in self.xticks_label]
 			elif k == "xticks_rotation":
 				self.xticks_rotation = float(v)
+			elif k == "xticks_pad":
+				self.xticks_pad = float(v)
+			elif k == "yticks_pad":
+				self.yticks_pad = float(v)
 			elif k == "legend":
 				self.legend = v.lower()
 			elif k == "background_color":
@@ -93,6 +111,14 @@ class Configuration(object):
 				v_list = [_v.strip() for _v in v_list]
 				k = "%s-%s" % (v_list[0], v_list[1])
 				self.spines[k] = v_list[2]
+			elif k == "xlim":
+				v_list = v.split(",")
+				v_list = [float(_v.strip()) for _v in v_list]
+				self.xlim = v_list
+			elif k == "ylim":
+				v_list = v.split(",")
+				v_list = [float(_v.strip()) for _v in v_list]
+				self.ylim = v_list
 
 
 
@@ -121,12 +147,33 @@ class Configuration(object):
 		else:
 			ax.grid(False)
 
-		ax.set_ylabel(self.ylabel)
-		ax.set_title(self.title)
+		if self.ylabel != "":
+			ax.set_ylabel(self.ylabel)
+
+		if self.title != "":
+			ax.set_title(self.title)
+
+		if self.xlim != None:
+			ax.set_xlim(self.xlim)
+		if self.ylim != None:
+			ax.set_ylim(self.ylim)
+
+		if self.xticks_label_show == "off":
+			plt.setp(ax.get_xticklabels(), visible=False)
+		if self.yticks_label_show == "off":
+			plt.setp(ax.get_yticklabels(), visible=False)
+
+		if self.xticks_pad != None:
+			ax.tick_params(axis='x',pad=self.xticks_pad)
+		if self.yticks_pad != None:
+			ax.tick_params(axis='y',pad=self.yticks_pad)
 
 		if self.background_color != "":
 			ax.patch.set_facecolor(self.background_color)
 		if self.legend == "on":
 			ax.legend()
+
+		if self.title != "":
+			ax.set_title(self.title)
 
 
