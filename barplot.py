@@ -13,7 +13,7 @@ class BarPlot(Configuration):
 	def __init__(self, filename):
 		Configuration.__init__(self, filename)
 
-		self.put_label_on_top = "on"
+		self.put_label_on_top = "off"
 		self.datatype = "float"
 		self.bar_count = 0
 		self.data_dict = dict()
@@ -106,7 +106,7 @@ class BarPlot(Configuration):
 
 
 
-	def autolabel(self, rects, xpos='center'):
+	def autolabel(self, ax, rects, xpos='center'):
 		"""
 		Attach a text label above each bar in *rects*, displaying its height.
 
@@ -162,7 +162,7 @@ class BarPlot(Configuration):
 
 		if C.put_label_on_top == "on":
 			for r in rects_list:
-				autolabel(r, "left")
+				self.autolabel(ax, r, "left")
 				# autolabel(rects2, "right")
 
 		super(BarPlot, self).draw(ax)

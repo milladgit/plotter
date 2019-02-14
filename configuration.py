@@ -34,9 +34,14 @@ class Configuration(object):
 		self.grid_which = "major"   # major, minor, both
 		self.grid_axis = "y"        # both, x, y
 
+		self.yscale = ""
+
 		self.background_color = ""
 
 		self.spines = dict()
+
+		self.hline_list = list()
+		self.vline_list = list()
 
 		self.load_config(filename)
 
@@ -119,7 +124,14 @@ class Configuration(object):
 				v_list = v.split(",")
 				v_list = [float(_v.strip()) for _v in v_list]
 				self.ylim = v_list
-
+			elif k == "hline":
+				v_list = v.split(",")
+				self.hline_list.append(v_list)
+			elif k == "vline":
+				v_list = v.split(",")
+				self.vline_list.append(v_list)
+			elif k == "yscale":
+				self.yscale = v
 
 
 	def draw(self, ax):
@@ -157,6 +169,19 @@ class Configuration(object):
 			ax.set_xlim(self.xlim)
 		if self.ylim != None:
 			ax.set_ylim(self.ylim)
+
+		if len(self.hline_list) > 0:
+			for h in self.hline_list:
+				val = float(h[0])
+				ax.axhline(val, color=h[1], ls=h[2], lw=h[3])
+
+		if len(self.vline_list) > 0:
+			for h in self.vline_list:
+				val = float(h[0])
+				ax.axvline(val, color=h[1], ls=h[2], lw=h[3])
+
+		if self.yscale != "":
+			ax.set_yscale(self.yscale)
 
 		if self.xticks_label_show == "off":
 			plt.setp(ax.get_xticklabels(), visible=False)
