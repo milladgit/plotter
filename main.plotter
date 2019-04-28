@@ -12,4 +12,6 @@ show_plot: on
 plot: 1, bar-example.plotter
 plot: 0, bar-example2.plotter
 plot: 3, lines-example.plotter
-plot: 2, off
+plot: 2, heatmap-example.plotter
+
+#plot: 0, heatmap-example.plotter

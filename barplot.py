@@ -22,7 +22,7 @@ class BarPlot(Configuration):
 		self.index_begin = 0.0
 		self.index_step = 0.1
 
-		self.load_config_file(filename)
+		self.load_config_file()
 
 
 	
@@ -30,10 +30,12 @@ class BarPlot(Configuration):
 		return np.arange(begin, begin + step * count, step)
 
 
-	def load_config_file(self, filename):
-		f = open(filename, "r")
-		lines = f.readlines()
-		f.close()
+	def load_config_file(self):
+
+		if self.lines == None:
+			return
+
+		lines = self.lines
 
 		i = 0
 		lines_count = len(lines)
@@ -127,6 +129,8 @@ class BarPlot(Configuration):
 
 	def draw(self, ax):
 
+		super(BarPlot, self).draw(ax)
+
 		C = self
 		ind = self.index_generator(self.index_begin, self.index_step, len(self.data_dict[0]))
 		width = C.width  # the width of the bars
@@ -153,6 +157,8 @@ class BarPlot(Configuration):
 				rects_list.append(rect)
 
 
+
+
 		ax.set_xticks(ind)
 		_ha = "right"
 		if C.xticks_rotation in [0, 90]:
@@ -164,7 +170,4 @@ class BarPlot(Configuration):
 			for r in rects_list:
 				self.autolabel(ax, r, "left")
 				# autolabel(rects2, "right")
-
-		super(BarPlot, self).draw(ax)
-
 

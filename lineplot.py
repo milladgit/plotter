@@ -19,14 +19,17 @@ class LinePlot(Configuration):
 		self.data_x = []
 		self.data_y = dict()
 
-		self.load_config_file(filename)
+		self.load_config_file()
 
 
 
-	def load_config_file(self, filename):
-		f = open(filename, "r")
-		lines = f.readlines()
-		f.close()
+	def load_config_file(self):
+
+		if self.lines == None:
+			return
+
+		lines = self.lines
+
 
 		i = 0
 		lines_count = len(lines)
@@ -98,8 +101,6 @@ class LinePlot(Configuration):
 		elif self.xaxis_datatype == "float":
 			self.data_x = [float(q) for q in self.data_x]
 
-		print self.data_x
-		print self.data_y
 
 
 
