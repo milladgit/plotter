@@ -98,8 +98,6 @@ class LinePlot(Configuration):
 		elif self.xaxis_datatype == "float":
 			self.data_x = [float(q) for q in self.data_x]
 
-		print self.data_x
-		print self.data_y
 
 
 
