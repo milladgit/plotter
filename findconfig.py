@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from configuration import *
 from barplot import *
 from lineplot import *
+from heatmapplot import *
 
 
 def findconfig(filename):
@@ -43,6 +44,8 @@ def findconfig(filename):
 		return BarPlot(filename)
 	elif filetype == "lineplot":
 		return LinePlot(filename)
+	elif filetype == "heatmapplot":
+		return HeatmapPlot(filename)
 	else:
 		print "Unable to recognize the file type."
 		exit(1)

@@ -19,15 +19,18 @@ class Figure(object):
 
 		# For following paramemters, please visit:
 		# https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots_adjust.html 
-		self.subplots_adjust = "off"
-		self.subplots_left  = 0.125  
-		self.subplots_right = 0.9    
-		self.subplots_bottom = 0.1   
-		self.subplots_top = 0.9      
-		self.subplots_wspace = 0.2   
-		self.subplots_hspace = 0.2   
+		self.subplots_adjust_left  = ""
+		self.subplots_adjust_right = ""    
+		self.subplots_adjust_bottom = ""   
+		self.subplots_adjust_top = ""    
+		self.subplots_adjust_wspace = ""
+		self.subplots_adjust_hspace = "" 
 
 		self.tight_layout = "on"
+
+		self.dpi = 800
+
+		self.lines = None
 
 		self.load_config_file(filename)
 
@@ -40,6 +43,8 @@ class Figure(object):
 		f = open(filename, "r")
 		lines = f.readlines()
 		f.close()
+
+		self.lines = lines
 
 		for L in lines:
 			l = L.strip()
@@ -68,6 +73,23 @@ class Figure(object):
 				self.figsize = [int(q.strip()) for q in self.figsize]
 			elif k == "tight_layout":
 				self.tight_layout = v
+			elif k == "subplots_adjust_left":
+				self.subplots_adjust_left = v
+			elif k == "subplots_adjust_right":
+				self.subplots_adjust_right = v
+			elif k == "subplots_adjust_top":
+				self.subplots_adjust_top = v
+			elif k == "subplots_adjust_bottom":
+				self.subplots_adjust_bottom = v
+			elif k == "subplots_adjust_wspace":
+				self.subplots_adjust_wspace = v
+			elif k == "subplots_adjust_hspace":
+				self.subplots_adjust_hspace = v
+			elif k == "dpi":
+				if v in ["None", "none", "0"]:
+					self.dpi = None
+				else:
+					self.dpi = int(v)
 			elif k == "plot":
 				params = v.split(",")
 				if len(params) != 2:
@@ -105,8 +127,8 @@ class Figure(object):
 				_ax = ax[self.configuration_list[i].ax_id]
 			else:
 				ax_id = self.configuration_list[i].ax_id
-				i_x = ax_id / self.subplot[0]
-				i_y = ax_id % self.subplot[0]
+				i_x = ax_id / self.subplot[1]
+				i_y = ax_id % self.subplot[1]
 				_ax = ax[i_x, i_y]
 
 
@@ -115,19 +137,28 @@ class Figure(object):
 			else:
 				self.configuration_list[i].draw(_ax)
 
-
-
-		if self.subplots_adjust == "on":
-			plt.subplots_adjust(left=self.subplots_left, right=self.subplots_right, top=self.subplots_top, bottom=self.subplots_bottom, wspace=self.subplots_wspace, hspace=self.subplots_hspace)
-
+		
 		if self.tight_layout == "on":
 			plt.tight_layout()
 		elif self.tight_layout != "off":
 			print "plotter - Unreconized 'tight_layout' value: %s" % (self.tight_layout)
 			exit(1)
 
+		if self.subplots_adjust_left != "":
+			plt.subplots_adjust(left=float(self.subplots_adjust_left))
+		if self.subplots_adjust_right != "":
+			plt.subplots_adjust(right=float(self.subplots_adjust_right))
+		if self.subplots_adjust_top != "":
+			plt.subplots_adjust(top=float(self.subplots_adjust_top))
+		if self.subplots_adjust_bottom != "":
+			plt.subplots_adjust(bottom=float(self.subplots_adjust_bottom))
+		if self.subplots_adjust_wspace != "":
+			plt.subplots_adjust(wspace=float(self.subplots_adjust_wspace))
+		if self.subplots_adjust_hspace != "":
+			plt.subplots_adjust(hspace=float(self.subplots_adjust_hspace))
+
 		if self.output_filename != "":
-			plt.savefig(self.output_filename, dpi=800)
+			plt.savefig(self.output_filename, dpi=self.dpi)
 
 		if self.show_plot == "on":
 			plt.show()

@@ -13,7 +13,7 @@ class BarPlot(Configuration):
 	def __init__(self, filename):
 		Configuration.__init__(self, filename)
 
-		self.put_label_on_top = "on"
+		self.put_label_on_top = "off"
 		self.datatype = "float"
 		self.bar_count = 0
 		self.data_dict = dict()
@@ -22,7 +22,7 @@ class BarPlot(Configuration):
 		self.index_begin = 0.0
 		self.index_step = 0.1
 
-		self.load_config_file(filename)
+		self.load_config_file()
 
 
 	
@@ -30,10 +30,12 @@ class BarPlot(Configuration):
 		return np.arange(begin, begin + step * count, step)
 
 
-	def load_config_file(self, filename):
-		f = open(filename, "r")
-		lines = f.readlines()
-		f.close()
+	def load_config_file(self):
+
+		if self.lines == None:
+			return
+
+		lines = self.lines
 
 		i = 0
 		lines_count = len(lines)
@@ -106,7 +108,7 @@ class BarPlot(Configuration):
 
 
 
-	def autolabel(self, rects, xpos='center'):
+	def autolabel(self, ax, rects, xpos='center'):
 		"""
 		Attach a text label above each bar in *rects*, displaying its height.
 
@@ -126,6 +128,8 @@ class BarPlot(Configuration):
 
 
 	def draw(self, ax):
+
+		super(BarPlot, self).draw(ax)
 
 		C = self
 		ind = self.index_generator(self.index_begin, self.index_step, len(self.data_dict[0]))
@@ -153,6 +157,8 @@ class BarPlot(Configuration):
 				rects_list.append(rect)
 
 
+
+
 		ax.set_xticks(ind)
 		_ha = "right"
 		if C.xticks_rotation in [0, 90]:
@@ -162,9 +168,6 @@ class BarPlot(Configuration):
 
 		if C.put_label_on_top == "on":
 			for r in rects_list:
-				autolabel(r, "left")
+				self.autolabel(ax, r, "left")
 				# autolabel(rects2, "right")
-
-		super(BarPlot, self).draw(ax)
-
 
