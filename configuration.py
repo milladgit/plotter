@@ -19,6 +19,10 @@ class Configuration(object):
 	def __init__(self, filename):
 		self.turn_off = False
 		self.ax_id = -1
+		self.ax_row_id = -1
+		self.ax_col_id = -1
+		self.ax_row_span = 1
+		self.ax_col_span = 1
 
 		self.title = ""
 
@@ -201,7 +205,7 @@ class Configuration(object):
 		
 
 		if self.xlabel != "":
-			ax.set_xlabel(self.xlabel)
+			ax.set_xlabel(self.xlabel.decode('string_escape'))
 		if self.ylabel != "":
 			ax.set_ylabel(self.ylabel)
 
@@ -274,6 +278,6 @@ class Configuration(object):
 			ax.legend()
 
 		if self.title != "":
-			ax.set_title(self.title)
+			ax.set_title(self.title.decode('string_escape'))
 
 

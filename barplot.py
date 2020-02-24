@@ -129,32 +129,20 @@ class BarPlot(Configuration):
 
 	def draw(self, ax):
 
-		super(BarPlot, self).draw(ax)
-
 		C = self
 		ind = self.index_generator(self.index_begin, self.index_step, len(self.data_dict[0]))
 		width = C.width  # the width of the bars
 
 		rects_list = list()
 
-		if C.bar_count == 1:
-			index = 0
-			rect = ax.bar(ind, C.data_dict[index], width, color=C.colors[index], label=C.labels[index])
+		for index in range(C.bar_count):
+			disposition = -width*C.bar_count/2.0 + index*width + width/2.0
+			lbl = C.labels[index]
+			if len(C.colors) > 0:
+				rect = ax.bar(ind + disposition, C.data_dict[index], width, color=C.colors[index], label=lbl)
+			else:
+				rect = ax.bar(ind + disposition, C.data_dict[index], width, label=C.labels[index])
 			rects_list.append(rect)
-		else:
-			# index = 0
-			# rect = ax.bar(ind - width/2, C.data_dict[index], width, color=C.colors[index], label=C.labels[index])
-			# rects_list.append(rect)
-			# index = 1
-			# rect = ax.bar(ind + width/2, C.data_dict[index], width, color=C.colors[index], label=C.labels[index])
-			# rects_list.append(rect)
-			for index in range(C.bar_count):
-				disposition = -width*C.bar_count/2.0 + index*width + width/2.0
-				if len(C.colors) > 0:
-					rect = ax.bar(ind + disposition, C.data_dict[index], width, color=C.colors[index], label=C.labels[index])
-				else:
-					rect = ax.bar(ind + disposition, C.data_dict[index], width, label=C.labels[index])
-				rects_list.append(rect)
 
 
 
@@ -170,4 +158,6 @@ class BarPlot(Configuration):
 			for r in rects_list:
 				self.autolabel(ax, r, "left")
 				# autolabel(rects2, "right")
+
+		super(BarPlot, self).draw(ax)
 

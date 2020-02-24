@@ -13,7 +13,7 @@ class Figure(object):
 		self.configuration_list = []
 
 		self.subplot = []
-		self.figsize = []
+		self.figsize = [8,6]
 		self.output_filename = ""
 		self.show_plot = ""
 
@@ -37,6 +37,27 @@ class Figure(object):
 
 	def add_configuration(self, config):
 		self.configuration_list.append(config)
+
+	def findspans(self, params):
+		colspan = rowspan = 1
+		spans_to_check = []
+
+		if len(params) == 4:
+			span = params[2]
+			spans_to_check.append(span)
+		elif len(params) == 5:
+			span = params[2]
+			spans_to_check.append(span)
+			span = params[3]
+			spans_to_check.append(span)
+
+		for span in spans_to_check:
+			spanlist = span.split("=")
+			if spanlist[0] == "colspan":
+				colspan = int(spanlist[1])
+			elif spanlist[1] == "rowspan":
+				rowspan = int(spanlist[1])
+		return rowspan, colspan
 
 
 	def load_config_file(self, filename):
@@ -92,24 +113,37 @@ class Figure(object):
 					self.dpi = int(v)
 			elif k == "plot":
 				params = v.split(",")
-				if len(params) != 2:
-					print "The plot field should have two fields: <plot_id> <plot_filename>"
+				if len(params) < 3:
+					print "The plot field should have following format: <plot_row_num>, <plot_col_num>, [colspan=x, rowspan=y,] <plot_filename>"
 					exit(1)
-				plot_id = int(params[0].strip())
-				config_filename = params[1].strip()
+				# plot_id = int(params[0].strip())
+				# config_filename = params[-1].strip()
+				# if config_filename == "off":
+				# 	C = Configuration("")
+				# 	C.ax_id = plot_id
+				# 	C.turn_off = True
+				# else:
+				# 	C = findconfig(config_filename)
+				# 	C.ax_id = plot_id
+				params = [p.strip() for p in params]
+				ax_row_id = int(params[0])
+				ax_col_id = int(params[1])
+				config_filename = params[-1].strip()
+				rowspan, colspan = self.findspans(params)
+				C = None
 				if config_filename == "off":
 					C = Configuration("")
-					C.ax_id = plot_id
 					C.turn_off = True
 				else:
 					C = findconfig(config_filename)
-					C.ax_id = plot_id
+				C.ax_row_id = ax_row_id
+				C.ax_col_id = ax_col_id
+				C.ax_row_span = rowspan
+				C.ax_col_span = colspan
 				self.add_configuration(C)
 
 
-
-	def draw(self):
-		fig, ax = None, None
+	def draw_axes_obselete(self):
 		if len(self.figsize) == 2:
 			fig, ax = plt.subplots(self.subplot[0], self.subplot[1], figsize=(self.figsize[0], self.figsize[1]))
 		elif len(self.subplot) == 2:
@@ -137,6 +171,22 @@ class Figure(object):
 			else:
 				self.configuration_list[i].draw(_ax)
 
+
+	def draw_axes(self):
+		fig = plt.figure(figsize=(self.figsize[0], self.figsize[1]))
+		for i, C in enumerate(self.configuration_list):
+			ax = plt.subplot2grid((self.subplot[0], self.subplot[1]), (C.ax_row_id, C.ax_col_id), fig=fig, colspan=C.ax_col_span, rowspan=C.ax_row_span)
+			if C.turn_off:
+				ax.axis("off")
+			else:
+				C.draw(ax)
+
+
+	def draw(self):
+		fig, ax = None, None
+
+		#self.draw_axes_obselete()
+		self.draw_axes()
 		
 		if self.tight_layout == "on":
 			plt.tight_layout()
